@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "67313956755",
+    "project_id": "dizli-customer-app",
+    "storage_bucket": "dizli-customer-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:67313956755:android:3e6b9f0dbaf6928887da66",
+        "android_client_info": {
+          "package_name": "com.dizli.customer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "67313956755-tm80tmnof064veodi3ok6ff51fk103te.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAdrs-CzUxq_mlWIRXo99NKbQ30-RRsG4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "67313956755-tm80tmnof064veodi3ok6ff51fk103te.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
