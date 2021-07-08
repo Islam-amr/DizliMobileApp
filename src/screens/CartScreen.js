@@ -115,6 +115,7 @@ const Item = props => {
   );
 };
 const CartScreen = ({navigation}) => {
+  const userLoggedIn = useSelector(state => state.user.isLoggedIn);
   const userCurrentRest = useSelector(state => state.user.curretCartRestarunt);
   const userCart = useSelector(state => state.user.userCart);
   useLayoutEffect(() => {
@@ -199,7 +200,11 @@ const CartScreen = ({navigation}) => {
           }}
           fontType={4}
           txtStyle={{color: colors.white, fontSize: responsiveFont(16)}}
-          onPress={() => navigation.navigate('Payment')}
+          onPress={
+            userLoggedIn
+              ? () => navigation.navigate('Payment')
+              : navigation.navigate('Sign In')
+          }
         />
       </View>
     </View>

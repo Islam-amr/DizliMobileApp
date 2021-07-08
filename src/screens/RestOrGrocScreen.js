@@ -176,35 +176,37 @@ const RestOrGrocScreen = ({navigation, route}) => {
                 }}
               />
             </View>
-            {userInfo.isLoggedIn && itemFav ? (
-              <TouchableOpacity
-                onPress={removeFromFavoriteHandler}
-                style={{width: '30%', height: '30%'}}>
-                <Image
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    resizeMode: 'contain',
-                    tintColor: colors.primary,
-                  }}
-                  source={require('../assets/icons/favorite.png')}
-                />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                onPress={addToFavoriteHandler}
-                style={{width: '30%', height: '30%'}}>
-                <Image
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    resizeMode: 'contain',
-                    tintColor: colors.primary,
-                  }}
-                  source={require('../assets/icons/heart.png')}
-                />
-              </TouchableOpacity>
-            )}
+            {userInfo.isLoggedIn ? (
+              itemFav ? (
+                <TouchableOpacity
+                  onPress={removeFromFavoriteHandler}
+                  style={{width: '30%', height: '30%'}}>
+                  <Image
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      resizeMode: 'contain',
+                      tintColor: colors.primary,
+                    }}
+                    source={require('../assets/icons/favorite.png')}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={addToFavoriteHandler}
+                  style={{width: '30%', height: '30%'}}>
+                  <Image
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      resizeMode: 'contain',
+                      tintColor: colors.primary,
+                    }}
+                    source={require('../assets/icons/heart.png')}
+                  />
+                </TouchableOpacity>
+              )
+            ) : null}
           </View>
         </View>
         <View

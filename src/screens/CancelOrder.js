@@ -29,7 +29,7 @@ const CancelOrder = ({navigation, route}) => {
     let res = selectedReason ? selectedReason : reasons[0].value;
     // console.log(reasons[0]);
     try {
-      const resp = await API.post(
+      await API.post(
         `customer/v1/orders/cancel/${route.params?.id}`,
         {
           reason: res.toString(),
@@ -40,7 +40,6 @@ const CancelOrder = ({navigation, route}) => {
           },
         },
       );
-      console.log(resp);
       setCancelModal(true);
     } catch (e) {
       console.log(e.response);
@@ -67,76 +66,78 @@ const CancelOrder = ({navigation, route}) => {
 
   const id = route.params?.id;
   return (
-    <View style={{flex: 1}}>
-      <View
-        style={{
-          flex: 0.2,
-          backgroundColor: colors.primary,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
-          <Image
-            style={{
-              width: dimensions.width * 0.125,
-              height: dimensions.width * 0.125,
-              resizeMode: 'contain',
-              tintColor: colors.white,
-            }}
-            source={require('../assets/icons/error.png')}
-          />
+    <>
+      <View style={{flex: 1}}>
+        <View
+          style={{
+            flex: 0.2,
+            backgroundColor: colors.primary,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Image
+              style={{
+                width: dimensions.width * 0.125,
+                height: dimensions.width * 0.125,
+                resizeMode: 'contain',
+                tintColor: colors.white,
+              }}
+              source={require('../assets/icons/error.png')}
+            />
+            <MyText
+              text={'Cancel Order'}
+              style={{fontSize: responsiveFont(18), color: colors.white}}
+            />
+          </View>
+        </View>
+        <View
+          style={{
+            flex: 0.6,
+            marginTop: '5%',
+            padding: '5%',
+          }}>
           <MyText
-            text={'Cancel Order'}
-            style={{fontSize: responsiveFont(18), color: colors.white}}
+            text={'Why are you cancelling your order?'}
+            fontType={4}
+            style={{fontSize: responsiveFont(16)}}
+          />
+          <RadioForm
+            radio_props={reasons}
+            initial={0}
+            formHorizontal={false}
+            labelHorizontal={true}
+            buttonColor={colors.primary}
+            selectedButtonColor={colors.primary}
+            animation={true}
+            onPress={value => {
+              setSelectedReason(value);
+            }}
+            labelStyle={{
+              fontSize: responsiveFont(15),
+              fontFamily: fonts.poppins_medium,
+            }} //text sixe
+            radioStyle={{marginTop: '2.5%'}}
           />
         </View>
-      </View>
-      <View
-        style={{
-          flex: 0.6,
-          marginTop: '5%',
-          padding: '5%',
-        }}>
-        <MyText
-          text={'Why are you cancelling your order?'}
-          fontType={4}
-          style={{fontSize: responsiveFont(16)}}
-        />
-        <RadioForm
-          radio_props={reasons}
-          initial={0}
-          formHorizontal={false}
-          labelHorizontal={true}
-          buttonColor={colors.primary}
-          selectedButtonColor={colors.primary}
-          animation={true}
-          onPress={value => {
-            setSelectedReason(value);
-          }}
-          labelStyle={{
-            fontSize: responsiveFont(15),
-            fontFamily: fonts.poppins_medium,
-          }} //text sixe
-          radioStyle={{marginTop: '2.5%'}}
-        />
-      </View>
 
-      <View style={styles.buttonCon}>
-        <Button
-          onPress={() => navigation.goBack()}
-          title={'Cancel'}
-          fontType={3}
-          container={styles.buttonStyle}
-          txtStyle={styles.pickupTxt}
-        />
-        <Button
-          onPress={cancelOrderHandler}
-          title={'Proceed'}
-          fontType={3}
-          bg={colors.primary}
-          container={styles.buttonStyle}
-          txtStyle={styles.deliveryTxt}
-        />
+        <View style={styles.buttonCon}>
+          <Button
+            onPress={() => navigation.goBack()}
+            title={'Cancel'}
+            fontType={3}
+            container={styles.buttonStyle}
+            txtStyle={styles.pickupTxt}
+          />
+          <Button
+            onPress={cancelOrderHandler}
+            title={'Proceed'}
+            fontType={3}
+            bg={colors.primary}
+            container={styles.buttonStyle}
+            txtStyle={styles.deliveryTxt}
+          />
+        </View>
       </View>
       <ErrModal
         visible={cancelModal}
@@ -147,7 +148,7 @@ const CancelOrder = ({navigation, route}) => {
           navigation.navigate('Home');
         }}
       />
-    </View>
+    </>
   );
 };
 

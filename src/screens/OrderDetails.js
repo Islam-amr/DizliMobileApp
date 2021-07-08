@@ -61,10 +61,11 @@ const OrderDetails = ({navigation, route}) => {
   const fetchOrderDetails = async () => {
     try {
       const response = await API.get(`customer/v1/orders/${hash}`);
-      console.log(response.data);
+      console.log(response.data.order.products);
       let data = await response.data;
       setOrderDetails(data);
       setOrderType(data?.order?.company?.category_type);
+      console.log(data.order.payment_type);
     } catch (e) {
       console.log(e);
     }

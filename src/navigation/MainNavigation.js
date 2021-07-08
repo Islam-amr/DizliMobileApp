@@ -103,7 +103,7 @@ const AppStack = () => {
       <Stack.Screen
         name="RestOrGroc"
         component={RestOrGrocScreen}
-        options={{headerTitle: () => <AddressHeader />}}
+        options={{headerTitle: () => <AddressHeader noTouch />}}
       />
       <Stack.Screen name="Cart" component={CartScreen} />
       <Stack.Screen name="Sign In" component={SignInScreen} />
@@ -193,7 +193,6 @@ const MainNavigation = () => {
         containerStyle={commonStyles.globalModal}>
         <AddressModal />
       </ActionSheet>
-      <Toast ref={ref => Toast.setRef(ref)} config={toastConfig} />
     </>
   );
 };

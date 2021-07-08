@@ -58,6 +58,7 @@ const OffersScreen = () => {
           longitude: item.teams[0].address.longitude,
         };
       });
+      console.log(response.data);
       setOffersData(updatedRestaurants.concat(updatedGroceries));
     } catch (e) {
       console.log(e.message);

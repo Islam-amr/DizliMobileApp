@@ -67,7 +67,11 @@ const GrocOrder = ({orderDetails}) => {
             source={require('../../assets/icons/checkOrder.png')}
           />
           <MyText
-            text={'Payment successful'}
+            text={
+              orderDetails.order.payment_type === 1
+                ? 'Order Placed'
+                : 'Payment successful'
+            }
             style={{fontSize: responsiveFont(18), color: colors.white}}
           />
           <MyText

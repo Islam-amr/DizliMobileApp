@@ -117,6 +117,7 @@ export default (state = initalState, action) => {
         item => item.id !== action.payload.id,
       );
       let updateOrRemove;
+      let resetCart = false;
       if (mealGrapper.quantity === 1) {
         if (state.userCart.products.length === 1) {
           updateOrRemove = {
@@ -126,6 +127,7 @@ export default (state = initalState, action) => {
             team_id: null,
             merchant_id: null,
           };
+          resetCart = true;
         } else {
           updateOrRemove = {
             tax: state.userCart.tax - action.payload.tax,
@@ -152,7 +154,11 @@ export default (state = initalState, action) => {
           merchant_id: state.userCart.merchant_id,
         };
       }
-      return {...state, userCart: updateOrRemove};
+      return {
+        ...state,
+        userCart: updateOrRemove,
+        curretCartRestarunt: resetCart ? {} : state.curretCartRestarunt,
+      };
     case REMOVE_FROM_CART_IMMEDIATE:
       let removedItem = state.userCart.products.find(
         i => i.id === action.payload.id,
@@ -169,6 +175,8 @@ export default (state = initalState, action) => {
           team_id: state.userCart.team_id,
           merchant_id: state.userCart.merchant_id,
         },
+        curretCartRestarunt:
+          state.userCart.products.length === 1 ? {} : state.curretCartRestarunt,
       };
     case ADD_ADDRESS:
       return {

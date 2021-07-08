@@ -112,7 +112,9 @@ const Payment = ({navigation}) => {
   const createOrder = async type => {
     let newProduct = userCart.products.map(function (i) {
       return {
-        addon_groups: i.addon_groups ? [i.addon_groups] : [],
+        addon_groups: i.addon_groups?.addon_group_id
+          ? i.addon_groups?.addon_group_id
+          : [],
         id: i.id,
         quantity: i.quantity,
         variant_groups: i.variant_groups ? i.variant_groups : [],
@@ -133,6 +135,7 @@ const Payment = ({navigation}) => {
       customer_notification_type: 1,
       destination: userDelivery,
     };
+    console.log(orderData.products[1]);
 
     setLoading(true);
     try {
@@ -344,6 +347,7 @@ const Payment = ({navigation}) => {
                 ? () => createOrder(1)
                 : () => createOrder(2)
             }
+            // onPress={() => console.log(userCart)}
             isLoading={loading}
             title={'Confirm'}
             bg={colors.primary}

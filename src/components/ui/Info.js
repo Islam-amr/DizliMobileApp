@@ -15,12 +15,16 @@ const DayWorkingHours = ({first, second, noBorder}) => {
           paddingHorizontal: '5%',
           marginVertical: '3%',
         }}>
-        <MyText
-          fontType={3}
-          text={first}
-          style={{textTransform: 'capitalize'}}
-        />
-        <MyText fontType={3} text={second} />
+        <View style={{flex: 0.4}}>
+          <MyText
+            fontType={3}
+            text={first}
+            style={{textTransform: 'capitalize'}}
+          />
+        </View>
+        <View style={{flex: 0.6, alignItems: 'flex-end'}}>
+          <MyText nol={2} fontType={3} text={second} />
+        </View>
       </View>
       {!noBorder && <View style={styles.borderLine} />}
     </>

@@ -204,7 +204,7 @@ const HomeScreen = ({navigation}) => {
               fontType={4}
               style={[styles.titleTxt, {textAlign: 'left'}]}
             />
-            <View style={styles.curretOrderCon}>
+            <View style={styles.curretOrderCon2}>
               <MyText
                 text={
                   'Order food from restaurants & grocery stores to be delivered to your doorstep or ready to for pick up.'
@@ -569,6 +569,18 @@ const styles = StyleSheet.create({
   curretOrderCon: {
     // flex: 0.5,
     width: dimensions.width * 0.9,
+    backgroundColor: colors.white,
+    borderRadius: 5,
+    // padding: '4%',
+    marginHorizontal: 20,
+    marginVertical: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    justifyContent: 'space-evenly',
+  },
+  curretOrderCon2: {
+    width: dimensions.width * 0.9,
+    alignSelf: 'center',
     backgroundColor: colors.white,
     borderRadius: 5,
     // padding: '4%',

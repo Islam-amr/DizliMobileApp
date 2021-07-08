@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {View, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
@@ -8,6 +8,9 @@ import responsiveFont from '../../constants/responsiveFont';
 import MyText from './MyText';
 import * as globalModalActions from '../../redux/actions/globalModal';
 import * as userActions from '../../redux/actions/user';
+import ActionSheet from 'react-native-actions-sheet';
+import LocateAddressScreen from '../../screens/LocateAddressScreen';
+
 const Item = props => {
   return (
     <TouchableOpacity
@@ -50,6 +53,19 @@ const Item = props => {
 const AddressModal = () => {
   const userAddresses = useSelector(state => state.user.userData?.address);
   const userDestination = useSelector(state => state.user.destination);
+  const actionSheetRef = useRef(); // to control map modal
+  // handle location saving and navigating to Home Screen
+  const onClose = destination => {
+    actionSheetRef.current?.setModalVisible();
+    dispatch(userActions.setAddress(destination));
+    dispatch(
+      userActions.setDeliveryLocation({
+        ...destination,
+        title: 'Chosen Location',
+      }),
+    );
+    toggleModal();
+  };
 
   const dispatch = useDispatch();
   const toggleModal = () => {
@@ -60,71 +76,84 @@ const AddressModal = () => {
     toggleModal();
   };
   return (
-    <View
-      style={{
-        width: '100%',
-        maxHeight: dimensions.height * 0.7,
-        borderTopLeftRadius: 50,
-        borderTopRightRadius: 50,
-        padding: '5%',
-        paddingHorizontal: '7.5%',
-        backgroundColor: colors.white,
-      }}>
+    <>
       <View
         style={{
-          flexDirection: 'row',
-          //   backgroundColor: 'red',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginTop: '5%',
+          width: '100%',
+          maxHeight: dimensions.height * 0.7,
+          borderTopLeftRadius: 50,
+          borderTopRightRadius: 50,
+          padding: '5%',
+          paddingHorizontal: '7.5%',
+          backgroundColor: colors.white,
         }}>
-        <MyText
-          text={'Saved address'}
-          fontType={2}
-          style={styles.savedAddress}
-        />
-        <TouchableOpacity
-          activeOpacity={0.6}
-          onPress={toggleModal}
-          style={{justifyContent: 'center', alignItems: 'center'}}>
-          <Image
-            source={require('../../assets/icons/xMark.png')}
-            style={{
-              width: dimensions.width * 0.04,
-              height: dimensions.width * 0.04,
-              resizeMode: 'contain',
-            }}
+        <View
+          style={{
+            flexDirection: 'row',
+            //   backgroundColor: 'red',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: '5%',
+          }}>
+          <MyText
+            text={'Saved address'}
+            fontType={2}
+            style={styles.savedAddress}
           />
-        </TouchableOpacity>
-      </View>
-      <FlatList
-        data={userAddresses}
-        keyExtractor={item => item.id}
-        renderItem={({item, index}) => {
-          return (
-            <Item
-              onPress={() => setDeliveryAddressHandler(item)}
-              head={`Deliver to ${item.title}`}
-              text={item.address}
-              icon={require('../../assets/icons/locMark.png')}
+          <TouchableOpacity
+            activeOpacity={0.6}
+            onPress={toggleModal}
+            style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Image
+              source={require('../../assets/icons/xMark.png')}
+              style={{
+                width: dimensions.width * 0.04,
+                height: dimensions.width * 0.04,
+                resizeMode: 'contain',
+              }}
             />
-          );
-        }}
-      />
-      <View style={{flexGrow: 15, marginTop: '5%'}}>
-        <Item
-          onPress={() =>
-            setDeliveryAddressHandler({
-              ...userDestination,
-              title: 'Current Location',
-            })
-          }
-          head={'Deliver to current location'}
-          text={'Give Dizli location access'}
-          icon={require('../../assets/icons/locationn.png')}
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          data={userAddresses}
+          keyExtractor={item => item.id}
+          renderItem={({item, index}) => {
+            return (
+              <Item
+                onPress={() => setDeliveryAddressHandler(item)}
+                head={`Deliver to ${item.title}`}
+                text={item.address}
+                icon={require('../../assets/icons/locMark.png')}
+              />
+            );
+          }}
         />
+        <View style={{flexGrow: 15, marginTop: '5%'}}>
+          <Item
+            onPress={() =>
+              setDeliveryAddressHandler({
+                ...userDestination,
+                title: 'Current Location',
+              })
+            }
+            head={'Deliver to current location'}
+            text={'Give Dizli location access'}
+            icon={require('../../assets/icons/locationn.png')}
+          />
+          <Item
+            onPress={() => actionSheetRef.current?.setModalVisible()}
+            head={'Deliver to new location'}
+            text={'Choose location on map'}
+            icon={require('../../assets/icons/locationn.png')}
+          />
+        </View>
       </View>
-    </View>
+      <ActionSheet ref={actionSheetRef} containerStyle={styles.modalCon}>
+        <View style={styles.modalCon}>
+          <LocateAddressScreen onClose={onClose} />
+        </View>
+      </ActionSheet>
+    </>
   );
 };
 
@@ -135,6 +164,11 @@ const styles = StyleSheet.create({
   },
   savedAddress2: {
     fontSize: responsiveFont(14),
+  },
+  modalCon: {
+    width: dimensions.width,
+    height: dimensions.height,
+    backgroundColor: colors.white,
   },
 });
 

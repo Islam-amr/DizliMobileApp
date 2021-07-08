@@ -7,7 +7,7 @@ import MyText from './MyText';
 import {useDispatch, useSelector} from 'react-redux';
 import * as globalModalActions from '../../redux/actions/globalModal';
 
-const AddressHeader = () => {
+const AddressHeader = props => {
   const dispatch = useDispatch();
   const userDeliveryLocation = useSelector(
     state => state.user.currentDeliverLocation?.title,
@@ -20,8 +20,8 @@ const AddressHeader = () => {
       <View style={{alignItems: 'center', justifyContent: 'center'}}>
         <MyText text={'Delivering to'} style={styles.deliver} />
         <TouchableOpacity
-          onPress={toggleModal}
-          activeOpacity={0.6}
+          onPress={props.noTouch ? null : toggleModal}
+          activeOpacity={props.noTouch ? 1 : 0.6}
           style={{flexDirection: 'row', alignItems: 'center'}}>
           <MyText
             text={userDeliveryLocation || 'Current Location'}

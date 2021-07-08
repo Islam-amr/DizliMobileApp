@@ -21,15 +21,17 @@ const optionsReducer = (state, action) => {
   switch (action.type) {
     case UPDATE_ADDONS:
       let isExist = state.addon_groups.addons.some(
-        i => i.id === action.payload.id,
+        i => i.addon_id === action.payload.addon_id,
       );
       return {
         ...state,
         addon_groups: {
+          ...state.addon_groups,
           name: '(T)',
-          id: state.addon_groups.id,
           addons: isExist
-            ? state.addon_groups.addons.filter(i => i.id !== action.payload.id)
+            ? state.addon_groups.addons.filter(
+                i => i.addon_id !== action.payload.addon_id,
+              )
             : [...state.addon_groups.addons, action.payload],
         },
         amount: isExist
@@ -63,7 +65,7 @@ const Options = ({item, setOptions}) => {
   const [optionsStates, dispatchOptions] = useReducer(optionsReducer, {
     addon_groups: {
       name: '(T)',
-      id: addonId || null,
+      addon_group_id: addonId || null,
       addons: [],
     },
 
@@ -96,7 +98,7 @@ const Options = ({item, setOptions}) => {
     dispatchOptions({
       type: UPDATE_ADDONS,
       payload: {
-        id: item.id,
+        addon_id: item.id,
         name: item.name,
         price: item.price,
         tax: item.tax,
@@ -110,16 +112,16 @@ const Options = ({item, setOptions}) => {
     dispatchOptions({
       type: UPDATE_VARIANT,
       payload: {
-        id: variantId,
         variant_id: item.id,
         name: item.name,
         price: item.price,
+        variant_group_id: variantId,
       },
       itemPrice: itemPrice,
     });
   };
 
-  console.log(optionsStates);
+  console.log(optionsStates, 'asfasf');
 
   useEffect(() => {
     setOptions(optionsStates);
@@ -129,18 +131,20 @@ const Options = ({item, setOptions}) => {
   return (
     <View style={{flex: 1}}>
       <View style={{flex: 0.15, flexDirection: 'row'}}>
-        <TouchableOpacity
-          onPress={onPrev}
-          style={{
-            flex: 0.125,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Image
-            source={require('../../assets/icons/prev.png')}
-            style={{width: '40%', height: '40%', resizeMode: 'contain'}}
-          />
-        </TouchableOpacity>
+        {[...item.addon_groups, ...item.variant_groups].lenght > 2 && (
+          <TouchableOpacity
+            onPress={onPrev}
+            style={{
+              flex: 0.125,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Image
+              source={require('../../assets/icons/prev.png')}
+              style={{width: '40%', height: '40%', resizeMode: 'contain'}}
+            />
+          </TouchableOpacity>
+        )}
         <ScrollView
           pagingEnabled
           ref={sref}
@@ -183,18 +187,20 @@ const Options = ({item, setOptions}) => {
             );
           })}
         </ScrollView>
-        <TouchableOpacity
-          onPress={onNext}
-          style={{
-            flex: 0.125,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Image
-            source={require('../../assets/icons/next.png')}
-            style={{width: '40%', height: '40%', resizeMode: 'contain'}}
-          />
-        </TouchableOpacity>
+        {[...item.addon_groups, ...item.variant_groups].lenght > 2 && (
+          <TouchableOpacity
+            onPress={onNext}
+            style={{
+              flex: 0.125,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Image
+              source={require('../../assets/icons/next.png')}
+              style={{width: '40%', height: '40%', resizeMode: 'contain'}}
+            />
+          </TouchableOpacity>
+        )}
       </View>
       <View style={{flex: 0.85}}>
         {[...item.addon_groups, ...item.variant_groups][activeTab]?.addons ? (
@@ -212,11 +218,18 @@ const Options = ({item, setOptions}) => {
                     marginBottom: 15,
                     alignItems: 'center',
                   }}>
-                  <MyText
-                    text={item.name}
-                    fontType={3}
-                    style={{fontSize: responsiveFont(15)}}
-                  />
+                  <View>
+                    <MyText
+                      text={item.name}
+                      fontType={3}
+                      style={{fontSize: responsiveFont(15)}}
+                    />
+                    <MyText
+                      text={`₹ ${item.price}`}
+                      fontType={3}
+                      style={{fontSize: responsiveFont(15)}}
+                    />
+                  </View>
                   <TouchableOpacity
                     // onPress={() =>
                     //   selectedAddons.some(i => i === item.id)
@@ -225,6 +238,7 @@ const Options = ({item, setOptions}) => {
                     //       )
                     //     : setSelectedAddons(prev => [...prev, item.id])
                     // }
+                    // onPress={() => addonAdd(item)}
                     onPress={() => addonAdd(item)}
                     activeOpacity={0.6}
                     style={{
@@ -234,7 +248,7 @@ const Options = ({item, setOptions}) => {
                       borderColor: colors.grey,
                     }}>
                     {optionsStates.addon_groups.addons.some(
-                      y => y.id === item.id,
+                      y => y.addon_id === item.id,
                     ) && (
                       <Image
                         style={{
@@ -256,6 +270,7 @@ const Options = ({item, setOptions}) => {
             {[...item.addon_groups, ...item.variant_groups][
               activeTab
             ].variants.map((i, index) => {
+              console.log(i);
               return (
                 <View
                   key={index}
@@ -266,13 +281,21 @@ const Options = ({item, setOptions}) => {
                     marginBottom: 15,
                     alignItems: 'center',
                   }}>
-                  <MyText
-                    text={i.name}
-                    fontType={3}
-                    style={{fontSize: responsiveFont(15)}}
-                  />
+                  <View>
+                    <MyText
+                      text={i.name}
+                      fontType={3}
+                      style={{fontSize: responsiveFont(15)}}
+                    />
+                    <MyText
+                      text={`₹ ${i.price}`}
+                      fontType={3}
+                      style={{fontSize: responsiveFont(15)}}
+                    />
+                  </View>
                   <TouchableOpacity
                     onPress={() => variantAdd(i)}
+                    // onPress={() => console.log(i)}
                     activeOpacity={0.6}
                     style={{
                       width: 25,
@@ -341,7 +364,7 @@ const StoreMenuItem = ({
           quantity: 1,
           price: options.amount + options.amountSize,
           tax: item.tax,
-          addon_groups: options.addon_groups,
+          addon_groups: [options.addon_groups],
           variant_groups: options.variant_groups,
         },
         item.team_id,
@@ -366,10 +389,10 @@ const StoreMenuItem = ({
         return;
       }
     }
-    if (!restaurantStatus) {
-      setErrModalVisible(true);
-      return;
-    }
+    // if (!restaurantStatus) {
+    //   setErrModalVisible(true);
+    //   return;
+    // }
     actionSheetRef.current?.setModalVisible();
   };
   // const getOptions = options => {

@@ -326,7 +326,7 @@ const Reviews = ({route}) => {
             let date = new Date(item.created_at);
             return (
               <View
-                key={item.id}
+                key={item.created_at}
                 style={{
                   width: '100%',
                   padding: '2.5%',

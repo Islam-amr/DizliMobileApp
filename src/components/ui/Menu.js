@@ -15,15 +15,18 @@ import {useDispatch, useSelector} from 'react-redux';
 import * as userActions from '../../redux/actions/user';
 import ErrModal from './ErrModal';
 import ReorderModal from './ReorderModal';
-
+import SearchInput from '../ui/SearchInput';
 const Menu = ({route}) => {
   const Tab = createMaterialTopTabNavigator();
   const dispatch = useDispatch();
   const curentCart = useSelector(state => state.user.curretCartRestarunt);
+  console.log(curentCart, 'hiay deeh');
   const [errModalVisible, setErrModalVisible] = useState(false);
   const [cartResetModal, setCartResetModal] = useState(false);
   const restaurantData = route.params?.restaurantData;
   const restaurantStatus = route.params?.restaurantStatus;
+  const [searcMode, setSearchMode] = useState(null);
+  const [searchResult, setSearchResult] = useState(null);
   // const deliveryTime = route.params?.deliveryTime;
   const [menus, setMenus] = useState(route.params?.itemCategories);
   const [activeMenu, setActiveMenu] = useState(
@@ -57,6 +60,20 @@ const Menu = ({route}) => {
   };
   const onRemove = (id, price, name, tax) => {
     dispatch(userActions.removeFromCart(id, price, name, tax));
+  };
+
+  const searchMeal = text => {
+    if (text.length === 0) {
+      setSearchResult(null);
+      return;
+    }
+    const newData = menus
+      .find(item => item.id === activeMenu)
+      .products.filter(item =>
+        item.name.toLowerCase().match(text.toLowerCase()),
+      );
+
+    setSearchResult(newData);
   };
 
   return (
@@ -93,29 +110,97 @@ const Menu = ({route}) => {
               shadowRadius: 16.0,
               elevation: 10,
             }}>
-            <TouchableOpacity activeOpacity={0.6} style={{flex: 1}}>
-              <MyText
-                text={'Search'}
-                fontType={3}
-                style={{textAlign: 'center', fontSize: responsiveFont(15)}}
-              />
-            </TouchableOpacity>
+            {searcMode === null && (
+              <TouchableOpacity
+                activeOpacity={0.6}
+                style={{flex: 1}}
+                onPress={() => setSearchMode(true)}>
+                <MyText
+                  text={'Search'}
+                  fontType={3}
+                  style={{textAlign: 'center', fontSize: responsiveFont(15)}}
+                />
+              </TouchableOpacity>
+            )}
             {/* <View style={{flex: 0.1, backgroundColor: 'green'}}> */}
-            <View
-              style={{width: 1, height: '120%', backgroundColor: colors.grey}}
-            />
-            {/* </View> */}
-            <TouchableOpacity
-              activeOpacity={0.6}
-              style={{
-                flex: 1,
-              }}>
-              <MyText
-                fontType={3}
-                text={'Availability'}
-                style={{textAlign: 'center', fontSize: responsiveFont(15)}}
+            {searcMode === null && (
+              <View
+                style={{width: 1, height: '120%', backgroundColor: colors.grey}}
               />
-            </TouchableOpacity>
+            )}
+            {/* </View> */}
+            {searcMode === null && (
+              <TouchableOpacity
+                onPress={() => setSearchMode(false)}
+                activeOpacity={0.6}
+                style={{
+                  flex: 1,
+                }}>
+                <MyText
+                  fontType={3}
+                  text={'Availability'}
+                  style={{textAlign: 'center', fontSize: responsiveFont(15)}}
+                />
+              </TouchableOpacity>
+            )}
+            {searcMode === false && (
+              <TouchableOpacity
+                onPress={() => setSearchMode(false)}
+                activeOpacity={0.6}
+                style={{
+                  flex: 1,
+                  justifyContent: 'space-around',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                }}>
+                <MyText
+                  fontType={3}
+                  text={'Availability'}
+                  style={{textAlign: 'center', fontSize: responsiveFont(15)}}
+                />
+                <TouchableOpacity
+                  onPress={() => setSearchMode(null)}
+                  style={{
+                    width: 20,
+                    height: 20,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Image
+                    style={{width: '80%', height: '80%', resizeMode: 'contain'}}
+                    source={require('../../assets/icons/xMark.png')}
+                  />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            )}
+
+            {searcMode === true && (
+              <View style={{flexDirection: 'row', flex: 1}}>
+                <View style={{flex: 0.85}}>
+                  <SearchInput
+                    container={{
+                      flexDirection: 'row-reverse',
+                      height: dimensions.height * 0.06,
+                    }}
+                    placeholder={'Search'}
+                    ph={'5%'}
+                    onChangeText={searchMeal}
+                  />
+                </View>
+                <TouchableOpacity
+                  onPress={() => setSearchMode(null)}
+                  style={{
+                    flex: 0.15,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Image
+                    style={{width: 15, height: 15, resizeMode: 'contain'}}
+                    source={require('../../assets/icons/xMark.png')}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
 
             {/* <MyText text={'Search'} style={{textAlign: 'center'}} />
           <View style={{width: 1, backgroundColor: 'red', height: '80%'}} />
@@ -123,10 +208,21 @@ const Menu = ({route}) => {
           </View>
           <View style={{flex: 1}}>
             <FlatList
-              data={menus.find(item => item.id === activeMenu).products}
+              data={
+                searcMode === false
+                  ? menus
+                      .find(item => item.id === activeMenu)
+                      .products.filter(
+                        x => x.nextAvailableAtMessage === 'Available',
+                      )
+                  : searchResult === null
+                  ? menus.find(item => item.id === activeMenu).products
+                  : searchResult
+              }
               keyExtractor={(item, index) => index}
               contentContainerStyle={{marginTop: '2.5%', paddingBottom: 20}}
               renderItem={({item, index}) => {
+                console.log(item);
                 return (
                   <StoreMenuItem
                     merchentData={restaurantData}

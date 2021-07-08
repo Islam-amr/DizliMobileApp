@@ -33,7 +33,11 @@ const RestOrder = ({orderDetails}) => {
             source={require('../../assets/icons/checkOrder.png')}
           />
           <MyText
-            text={'Payment successful'}
+            text={
+              orderDetails.order.payment_type === 1
+                ? 'Order Placed'
+                : 'Payment successful'
+            }
             style={{fontSize: responsiveFont(18), color: colors.white}}
           />
           <MyText
@@ -108,7 +112,7 @@ const RestOrder = ({orderDetails}) => {
               alignItems: 'center',
             }}>
             <MyText
-              text={'Kitchen Fcooking'}
+              text={'Kitchen cooking'}
               style={{fontSize: responsiveFont(12), color: colors.grey}}
             />
           </View>

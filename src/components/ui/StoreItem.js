@@ -101,45 +101,47 @@ const StoreItem = props => {
             />
           </View>
         </View>
-        {userInfo.isLoggedIn && props.item.itemFav ? (
-          <TouchableOpacity
-            onPress={removeFromFavoriteHandler}
-            style={{
-              position: 'absolute',
-              width: '10%',
-              height: '20%',
-              right: '5%',
-            }}>
-            <Image
+        {userInfo.isLoggedIn ? (
+          props.item.itemFav ? (
+            <TouchableOpacity
+              onPress={removeFromFavoriteHandler}
               style={{
-                width: '100%',
-                height: '100%',
-                resizeMode: 'contain',
-                tintColor: colors.primary,
-              }}
-              source={require('../../assets/icons/favorite.png')}
-            />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            onPress={addToFavoriteHandler}
-            style={{
-              position: 'absolute',
-              width: '10%',
-              height: '20%',
-              right: '5%',
-            }}>
-            <Image
+                position: 'absolute',
+                width: '10%',
+                height: '20%',
+                right: '5%',
+              }}>
+              <Image
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  resizeMode: 'contain',
+                  tintColor: colors.primary,
+                }}
+                source={require('../../assets/icons/favorite.png')}
+              />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={addToFavoriteHandler}
               style={{
-                width: '100%',
-                height: '100%',
-                resizeMode: 'contain',
-                tintColor: colors.primary,
-              }}
-              source={require('../../assets/icons/heart.png')}
-            />
-          </TouchableOpacity>
-        )}
+                position: 'absolute',
+                width: '10%',
+                height: '20%',
+                right: '5%',
+              }}>
+              <Image
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  resizeMode: 'contain',
+                  tintColor: colors.primary,
+                }}
+                source={require('../../assets/icons/heart.png')}
+              />
+            </TouchableOpacity>
+          )
+        ) : null}
       </View>
     </TouchableOpacity>
   );
