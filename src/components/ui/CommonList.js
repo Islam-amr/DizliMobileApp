@@ -69,8 +69,9 @@ const Item = props => {
           alignItems: props.noRemove ? 'flex-end' : 'flex-end',
         }}>
         <MyText
+          cur
           nol={1}
-          text={`₹${props.item.price}`}
+          text={`${props.item.price}`}
           fontType={3}
           style={{
             color: colors.grey,
@@ -81,7 +82,8 @@ const Item = props => {
           <>
             <MyText
               nol={1}
-              text={'₹150.20'}
+              cur
+              text={'150.20'}
               fontType={2}
               style={{
                 color: colors.grey,
@@ -89,8 +91,9 @@ const Item = props => {
               }}
             />
             <MyText
+              cur
               nol={1}
-              text={'₹150.20'}
+              text={'150.20'}
               fontType={2}
               style={{
                 color: colors.grey,
@@ -259,8 +262,9 @@ const CommonList = ({
             }}
           />
           <MyText
+            cur
             nol={1}
-            text={`₹${userCart.amount}`}
+            text={`${userCart.amount}`}
             fontType={3}
             style={{
               color: colors.black,
@@ -279,8 +283,9 @@ const CommonList = ({
             }}
           />
           <MyText
+            cur
             nol={1}
-            text={`₹${userCart.tax}`}
+            text={`${userCart.tax}`}
             fontType={3}
             style={{
               color: colors.black,
@@ -300,7 +305,8 @@ const CommonList = ({
           />
           <MyText
             nol={1}
-            text={`₹${deliveryCharge}` || '₹0'}
+            cur
+            text={`${deliveryCharge}` || '0'}
             fontType={3}
             style={{
               color: colors.black,
@@ -316,7 +322,8 @@ const CommonList = ({
           }}>
           <MyText text={'To Pay'} fontType={4} style={styles.toPay} />
           <MyText
-            text={`₹${userCart.amount + userCart.tax + deliveryCharge}`}
+            cur
+            text={`${userCart.amount + userCart.tax + deliveryCharge}`}
             fontType={4}
             style={styles.toPay}
           />

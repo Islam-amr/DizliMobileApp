@@ -155,7 +155,7 @@ const DrawerContent = props => {
           title={'My Orders'}
           icon={require('../../assets/icons/orders.png')}
           touch
-          onPress={() => props.navigation.navigate('Home')}
+          onPress={() => props.navigation.navigate('Home', {screen: 'Home'})}
         />
         <DrawerItem
           title={'Manage Addresses'}

@@ -116,8 +116,14 @@ const HomeScreen = ({navigation}) => {
       const unsubscribe = fetchUserOrder();
 
       return () => unsubscribe;
-    }, []),
+    }, [navigation]),
   );
+
+  useEffect(() => {
+    const unsubscribe = fetchUserOrder();
+
+    return () => unsubscribe;
+  }, [userToken]);
 
   const [reviewStates, dispatchReview] = useReducer(reviewReducer, {
     order_packing_stars: 3,
@@ -140,7 +146,6 @@ const HomeScreen = ({navigation}) => {
       console.log(e.response);
     }
   };
-
   const submitReview = async merchentId => {
     try {
       const response = await API.post(
@@ -197,7 +202,32 @@ const HomeScreen = ({navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
-        {userOrder.length === 0 ? (
+        {!userToken ? (
+          <View style={[styles.rowCon, {paddingHorizontal: '5%'}]}>
+            <MyText
+              text={'Welcome to Dilzi'}
+              fontType={4}
+              style={[styles.titleTxt, {textAlign: 'left'}]}
+            />
+            <View style={styles.curretOrderCon2}>
+              <MyText
+                text={
+                  'Order food from restaurants & grocery stores to be delivered to your doorstep or ready to for pick up.'
+                }
+                fontType={3}
+                style={[
+                  styles.imgTxt,
+                  {textAlign: 'left', fontSize: responsiveFont(14)},
+                ]}
+              />
+              <MyText
+                text={'Now available in Tiruvallur'}
+                fontType={3}
+                style={[styles.imgTxt, {fontSize: responsiveFont(14)}]}
+              />
+            </View>
+          </View>
+        ) : userOrder.length === 0 ? (
           <View style={[styles.rowCon, {paddingHorizontal: '5%'}]}>
             <MyText
               text={'Welcome to Dilzi'}
@@ -239,8 +269,13 @@ const HomeScreen = ({navigation}) => {
               data={userOrder}
               keyExtractor={item => item.id}
               renderItem={({item}) => {
+                console.log(item);
                 return (
-                  <View style={styles.curretOrderCon}>
+                  <TouchableOpacity
+                    style={styles.curretOrderCon}
+                    onPress={() =>
+                      navigation.navigate('Order Details', {hash: item.hash})
+                    }>
                     <View
                       style={{
                         flex: 1,
@@ -276,7 +311,25 @@ const HomeScreen = ({navigation}) => {
                             justifyContent: 'center',
                             alignItems: 'center',
                           }}>
-                          <TouchableOpacity style={styles.orderTab}>
+                          <TouchableOpacity
+                            style={styles.orderTab}
+                            onPress={() =>
+                              navigation.navigate('ActiveOrderData', {
+                                orderDetails: {
+                                  order: {
+                                    order_id: item.id,
+                                    company: {
+                                      name: item.merchant_name,
+                                    },
+                                    products: item.products,
+                                    amount: item.amount,
+                                    tax: item.tax || 0,
+                                    fee: 0,
+                                    payment_type: item.payment_type,
+                                  },
+                                },
+                              })
+                            }>
                             <Image
                               style={{
                                 width: '60%',
@@ -297,9 +350,15 @@ const HomeScreen = ({navigation}) => {
                             alignItems: 'center',
                           }}>
                           <TouchableOpacity
-                            style={styles.orderTab}
-                            onPress={() =>
-                              actionSheetRef.current?.setModalVisible()
+                            style={[
+                              styles.orderTab,
+                              {opacity: item.status !== 6 ? 0.6 : 1},
+                            ]}
+                            onPress={
+                              item.status !== 6
+                                ? null
+                                : () =>
+                                    actionSheetRef.current?.setModalVisible()
                             }>
                             <Image
                               style={{
@@ -312,7 +371,10 @@ const HomeScreen = ({navigation}) => {
                           </TouchableOpacity>
                           <MyText
                             text={'Rate'}
-                            style={{color: colors.primary}}
+                            style={{
+                              color: colors.primary,
+                              opacity: item.status !== 6 ? 0.6 : 1,
+                            }}
                           />
                         </View>
                         <View
@@ -321,11 +383,18 @@ const HomeScreen = ({navigation}) => {
                             alignItems: 'center',
                           }}>
                           <TouchableOpacity
-                            style={styles.orderTab}
-                            onPress={() => {
-                              setOrderId(item.id);
-                              setReorderModal(true);
-                            }}>
+                            style={[
+                              styles.orderTab,
+                              {opacity: item.status !== 6 ? 0.6 : 1},
+                            ]}
+                            onPress={
+                              item.status !== 6
+                                ? null
+                                : () => {
+                                    setOrderId(item.id);
+                                    setReorderModal(true);
+                                  }
+                            }>
                             <Image
                               style={{
                                 width: '60%',
@@ -337,7 +406,10 @@ const HomeScreen = ({navigation}) => {
                           </TouchableOpacity>
                           <MyText
                             text={'Re-order'}
-                            style={{color: colors.primary}}
+                            style={{
+                              color: colors.primary,
+                              opacity: item.status !== 6 ? 0.6 : 1,
+                            }}
                           />
                         </View>
                       </View>
@@ -499,7 +571,7 @@ const HomeScreen = ({navigation}) => {
                         </View>
                       </View>
                     </ActionSheet>
-                  </View>
+                  </TouchableOpacity>
                 );
               }}
             />

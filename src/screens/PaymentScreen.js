@@ -328,19 +328,21 @@ const Payment = ({navigation}) => {
               radioStyle={{marginTop: '2.5%'}}
             />
           </View>
-          {paymentType && (
-            <MyText
-              fontType={2}
-              text={
-                'You will be redirected to the providers’ payment platform to complete the purchase.'
-              }
-              style={{
-                textAlign: 'left',
-                fontSize: responsiveFont(14),
-                marginTop: '2.5%',
-              }}
-            />
-          )}
+          <View style={{width: '100%', height: 60}}>
+            {paymentType && (
+              <MyText
+                fontType={2}
+                text={
+                  'You will be redirected to the providers’ payment platform to complete the purchase.'
+                }
+                style={{
+                  textAlign: 'left',
+                  fontSize: responsiveFont(12),
+                  marginTop: '2.5%',
+                }}
+              />
+            )}
+          </View>
           <Button
             onPress={
               paymentType === false

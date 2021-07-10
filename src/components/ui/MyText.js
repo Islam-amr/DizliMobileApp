@@ -26,6 +26,7 @@ const MyText = props => {
       allowFontScaling={false}
       numberOfLines={props.nol}
       style={[{fontFamily: fontType}, props.style]}>
+      {props.cur && <Text style={{fontFamily: ''}}>₹</Text>}
       {props.text}
     </Text>
   );

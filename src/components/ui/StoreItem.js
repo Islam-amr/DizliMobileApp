@@ -86,11 +86,16 @@ const StoreItem = props => {
             fontType={2}
             style={styles.deliveryInfo}
           />
-          <MyText
-            text={`Min: ₹${props.item.itemMinValue}`}
-            fontType={2}
-            style={styles.deliveryInfo}
-          />
+          <View style={{flexDirection: 'row'}}>
+            <MyText text={`Min: `} fontType={2} style={styles.deliveryInfo} />
+            <MyText
+              cur
+              text={`${props.item.itemMinValue}`}
+              fontType={2}
+              style={styles.deliveryInfo}
+            />
+          </View>
+
           <View style={{flexDirection: 'row'}}>
             <Rating
               type={'star'}

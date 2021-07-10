@@ -53,11 +53,22 @@ const SearchScreen = ({navigation}) => {
     try {
       const response = await API.post(`customer/v1/search`, data);
       setResults(response.data);
+      let fullArray = [
+        ...response.data?.grocery,
+        ...response.data?.products,
+        ...response.data?.restaurant,
+      ];
+      if (fullArray.length === 0) {
+        setResults(fullArray);
+      } else {
+        setResults(response.data);
+      }
     } catch (e) {
       console.log(e);
     }
   };
 
+  console.log(results);
   return (
     <TouchableWithoutFeedback
       onPress={() => Keyboard.dismiss()}
@@ -80,60 +91,68 @@ const SearchScreen = ({navigation}) => {
             onSubmitEditing={submit}
           />
         </View>
-        <ScrollView
-          style={{
-            flex: 0.875,
-            paddingHorizontal: '10%',
-          }}>
-          {results.grocery
-            ? results.grocery.map(item => {
-                return (
-                  <TouchableOpacity
-                    key={item.id}
-                    style={styles.itemView}
-                    onPress={() => navigation.navigate('Groceries')}>
-                    <MyText
-                      fontType={4}
-                      text={item.name}
-                      style={styles.itemTxt}
-                    />
-                  </TouchableOpacity>
-                );
-              })
-            : null}
-          {results.products
-            ? results.products.map(item => {
-                return (
-                  <TouchableOpacity
-                    key={item.id}
-                    style={styles.itemView}
-                    onPress={() => navigation.navigate('Restaurants')}>
-                    <MyText
-                      fontType={4}
-                      text={item.name}
-                      style={styles.itemTxt}
-                    />
-                  </TouchableOpacity>
-                );
-              })
-            : null}
-          {results.restaurant
-            ? results.restaurant.map(item => {
-                return (
-                  <TouchableOpacity
-                    key={item.id}
-                    style={styles.itemView}
-                    onPress={() => navigation.navigate('Restaurants')}>
-                    <MyText
-                      fontType={4}
-                      text={item.name}
-                      style={styles.itemTxt}
-                    />
-                  </TouchableOpacity>
-                );
-              })
-            : null}
-        </ScrollView>
+        {results.length === 0 ? (
+          <MyText
+            fontType={3}
+            style={{marginLeft: '5%', fontSize: responsiveFont(14)}}
+            text={'No result found'}
+          />
+        ) : (
+          <ScrollView
+            style={{
+              flex: 0.875,
+              paddingHorizontal: '10%',
+            }}>
+            {results.grocery
+              ? results.grocery.map(item => {
+                  return (
+                    <TouchableOpacity
+                      key={item.id}
+                      style={styles.itemView}
+                      onPress={() => navigation.navigate('Groceries')}>
+                      <MyText
+                        fontType={4}
+                        text={item.name}
+                        style={styles.itemTxt}
+                      />
+                    </TouchableOpacity>
+                  );
+                })
+              : null}
+            {results.products
+              ? results.products.map(item => {
+                  return (
+                    <TouchableOpacity
+                      key={item.id}
+                      style={styles.itemView}
+                      onPress={() => navigation.navigate('Restaurants')}>
+                      <MyText
+                        fontType={4}
+                        text={item.name}
+                        style={styles.itemTxt}
+                      />
+                    </TouchableOpacity>
+                  );
+                })
+              : null}
+            {results.restaurant
+              ? results.restaurant.map(item => {
+                  return (
+                    <TouchableOpacity
+                      key={item.id}
+                      style={styles.itemView}
+                      onPress={() => navigation.navigate('Restaurants')}>
+                      <MyText
+                        fontType={4}
+                        text={item.name}
+                        style={styles.itemTxt}
+                      />
+                    </TouchableOpacity>
+                  );
+                })
+              : null}
+          </ScrollView>
+        )}
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );

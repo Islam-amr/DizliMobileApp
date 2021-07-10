@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import OrderSteps from './OrderSteps';
 import responsiveFont from '../../constants/responsiveFont';
@@ -9,11 +9,147 @@ import commonStyles from '../../constants/commonStyles';
 import MyText from '../ui/MyText';
 import {useNavigation} from '@react-navigation/core';
 
+let unactive = require('../../assets/icons/orderSteps.png');
+let active = require('../../assets/icons/activeStep.png');
+
+const OrderLine = ({status}) => {
+  const [activeList, setActiveList] = useState({
+    activeOne: false,
+    activeTwo: false,
+    activeThree: false,
+    textOne: 'Order placed',
+    textTwo: 'Kitchen cooking',
+    textThree: 'Out for Delivery',
+  });
+  console.log(status);
+  useEffect(() => {
+    if (status === 1 || status === 8) {
+      setActiveList({
+        activeOne: true,
+        activeTwo: false,
+        activeThree: false,
+        textOne: 'Order placed',
+        textTwo: 'Kitchen cooking',
+        textThree: 'Out for Delivery',
+      });
+    } else if (status === 2) {
+      setActiveList({
+        activeOne: true,
+        activeTwo: true,
+        activeThree: false,
+        textOne: 'Order placed',
+        textTwo: 'Kitchen cooking',
+        textThree: 'Out for Delivery',
+      });
+    } else if (status === 3) {
+      setActiveList({
+        activeOne: true,
+        activeTwo: true,
+        activeThree: false,
+        textOne: 'Order placed',
+        textTwo: 'Kitchen cooking',
+        textThree: 'Out for Delivery',
+      });
+    } else if (status === 4) {
+      setActiveList({
+        activeOne: true,
+        activeTwo: true,
+        activeThree: true,
+        textOne: 'Order placed',
+        textTwo: 'Kitchen cooking',
+        textThree: 'Out for Delivery',
+      });
+    } else if (status === 5) {
+      setActiveList({
+        activeOne: true,
+        activeTwo: true,
+        activeThree: true,
+        textOne: 'Order placed',
+        textTwo: 'Kitchen cooking',
+        textThree: 'Order Canceled',
+      });
+    } else if (status === 6) {
+      setActiveList({
+        activeOne: true,
+        activeTwo: true,
+        activeThree: true,
+        textOne: 'Order placed',
+        textTwo: 'Kitchen cooking',
+        textThree: 'Order Completed',
+      });
+    }
+  }, [status]);
+  return (
+    <View
+      style={{
+        flex: 0.15,
+        paddingHorizontal: '2.5%',
+      }}>
+      <View
+        style={{
+          flex: 0.8,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-evenly',
+        }}>
+        <OrderSteps
+          icon={activeList.activeOne ? active : unactive}
+          bigger={activeList.activeOne}
+        />
+        <Image source={require('../../assets/icons/line.png')} />
+        <OrderSteps
+          icon={activeList.activeTwo ? active : unactive}
+          bigger={activeList.activeTwo}
+        />
+        <Image source={require('../../assets/icons/line.png')} />
+        <OrderSteps
+          icon={activeList.activeThree ? active : unactive}
+          bigger={activeList.activeThree}
+        />
+      </View>
+      <View
+        style={{
+          flex: 0.2,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <View
+          style={{
+            flex: 1,
+          }}>
+          <MyText
+            text={activeList.textOne}
+            style={{fontSize: responsiveFont(12), color: colors.grey}}
+          />
+        </View>
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+          }}>
+          <MyText
+            text={activeList.textTwo}
+            style={{fontSize: responsiveFont(12), color: colors.grey}}
+          />
+        </View>
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'flex-end',
+          }}>
+          <MyText
+            text={activeList.textThree}
+            style={{fontSize: responsiveFont(12), color: colors.grey}}
+          />
+        </View>
+      </View>
+    </View>
+  );
+};
 const RestOrder = ({orderDetails}) => {
   const navigation = useNavigation();
-  console.log(orderDetails.order.status);
-  let unactive = require('../../assets/icons/orderSteps.png');
-  let active = require('../../assets/icons/activeStep.png');
+  console.log(orderDetails.order.status, 'jklnj');
+
   return (
     <View style={commonStyles.mainView2}>
       <View
@@ -34,7 +170,9 @@ const RestOrder = ({orderDetails}) => {
           />
           <MyText
             text={
-              orderDetails.order.payment_type === 1
+              orderDetails.order.status === 5
+                ? 'Order Canceled'
+                : orderDetails.order.payment_type === 1
                 ? 'Order Placed'
                 : 'Payment successful'
             }
@@ -46,92 +184,9 @@ const RestOrder = ({orderDetails}) => {
           />
         </View>
       </View>
-      <View
-        style={{
-          flex: 0.15,
-          paddingHorizontal: '2.5%',
-        }}>
-        <View
-          style={{
-            flex: 0.8,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
-          }}>
-          <OrderSteps
-            icon={
-              orderDetails.order.status === 8 || orderDetails.order.status === 1
-                ? active
-                : unactive
-            }
-            bigger={
-              orderDetails.order.status === 8 || orderDetails.order.status === 1
-            }
-          />
-          <Image source={require('../../assets/icons/line.png')} />
-          <OrderSteps
-            icon={orderDetails.order.status === 2 ? active : unactive}
-            bigger={orderDetails.order.status === 2}
-          />
-          {orderDetails.order.delivery_type === 1 ? (
-            <>
-              <Image source={require('../../assets/icons/line.png')} />
-              <OrderSteps
-                icon={orderDetails.order.status === 4 ? active : unactive}
-                bigger={orderDetails.order.status === 4}
-              />
-            </>
-          ) : (
-            <>
-              <Image source={require('../../assets/icons/line.png')} />
-              <OrderSteps
-                icon={orderDetails.order.status === 4 ? active : unactive}
-                bigger={orderDetails.order.status === 4}
-              />
-            </>
-          )}
-        </View>
-        <View
-          style={{
-            flex: 0.2,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
-          <View
-            style={{
-              flex: 1,
-            }}>
-            <MyText
-              text={'Order placed'}
-              style={{fontSize: responsiveFont(12), color: colors.grey}}
-            />
-          </View>
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-            }}>
-            <MyText
-              text={'Kitchen cooking'}
-              style={{fontSize: responsiveFont(12), color: colors.grey}}
-            />
-          </View>
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'flex-end',
-            }}>
-            <MyText
-              text={
-                orderDetails.order.delivery_type === 1
-                  ? 'Out for delivery'
-                  : 'Ready for pickup'
-              }
-              style={{fontSize: responsiveFont(12), color: colors.grey}}
-            />
-          </View>
-        </View>
-      </View>
+      {orderDetails.order.status === 5 ? null : (
+        <OrderLine status={orderDetails.order.status} />
+      )}
       <View style={{flex: 0.55, justifyContent: 'space-between'}}>
         <View>
           <View style={{paddingHorizontal: '5%', marginTop: '5%'}}>
@@ -201,14 +256,16 @@ const RestOrder = ({orderDetails}) => {
             text={'Call support 12345678 (7am-7pm)'}
             style={{fontSize: responsiveFont(12)}}
           />
-          <MyText
-            onPress={() =>
-              navigation.navigate('Cancel Order', {id: orderDetails.order.id})
-            }
-            fontType={4}
-            text={'Cancel order'}
-            style={{fontSize: responsiveFont(14), color: colors.primary}}
-          />
+          {orderDetails.order.status !== 5 && (
+            <MyText
+              onPress={() =>
+                navigation.navigate('Cancel Order', {id: orderDetails.order.id})
+              }
+              fontType={4}
+              text={'Cancel order'}
+              style={{fontSize: responsiveFont(14), color: colors.primary}}
+            />
+          )}
         </View>
       </View>
     </View>

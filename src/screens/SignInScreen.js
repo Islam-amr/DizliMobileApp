@@ -44,12 +44,14 @@ const signInReducer = (state, action) => {
   }
 };
 
-const SignInScreen = ({navigation}) => {
+const SignInScreen = ({navigation, route}) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => null,
     });
   }, []);
+  const lastScreen = route.params?.lastScreen;
+  console.log(lastScreen, 'ahii');
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [errMsg, setErrMsg] = useState(false);
@@ -89,7 +91,11 @@ const SignInScreen = ({navigation}) => {
           signInFormStates.inputValues.password,
         ),
       );
-      navigation.navigate('Home');
+      if (lastScreen) {
+        navigation.navigate('Cart');
+      } else {
+        navigation.navigate('Home');
+      }
     } catch (e) {
       setErrMsg(e.response.data.message);
       setErrModalVisible(true);

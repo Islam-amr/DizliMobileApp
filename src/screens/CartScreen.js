@@ -203,7 +203,7 @@ const CartScreen = ({navigation}) => {
           onPress={
             userLoggedIn
               ? () => navigation.navigate('Payment')
-              : navigation.navigate('Sign In')
+              : navigation.navigate('Sign In', {lastScreen: 'Cart'})
           }
         />
       </View>

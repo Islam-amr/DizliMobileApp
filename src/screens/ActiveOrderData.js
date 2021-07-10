@@ -6,7 +6,7 @@ import responsiveFont from '../constants/responsiveFont';
 
 const ActiveOrderData = ({route, navigation}) => {
   const orderData = route.params?.orderDetails?.order;
-
+  console.log(orderData);
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => null,
@@ -51,6 +51,7 @@ const ActiveOrderData = ({route, navigation}) => {
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
+                    alignItems: 'center',
                   }}>
                   <MyText
                     text={`${item.name} x${item.quantity}`}
@@ -58,6 +59,7 @@ const ActiveOrderData = ({route, navigation}) => {
                     style={{
                       color: colors.black,
                       fontSize: responsiveFont(16),
+                      width: '70%',
                     }}
                   />
                   <MyText

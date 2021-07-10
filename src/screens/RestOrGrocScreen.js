@@ -137,15 +137,27 @@ const RestOrGrocScreen = ({navigation, route}) => {
                   fontSize: responsiveFont(12),
                 }}
               />
-              <MyText
-                nol={1}
-                text={`Min. order : ₹ ${item.itemMinValue}`}
-                fontType={2}
-                style={{
-                  color: colors.grey,
-                  fontSize: responsiveFont(12),
-                }}
-              />
+              <View style={{flexDirection: 'row'}}>
+                <MyText
+                  nol={1}
+                  text={`Min. order : `}
+                  fontType={2}
+                  style={{
+                    color: colors.grey,
+                    fontSize: responsiveFont(12),
+                  }}
+                />
+                <MyText
+                  nol={1}
+                  cur
+                  text={`${item.itemMinValue}`}
+                  fontType={2}
+                  style={{
+                    color: colors.grey,
+                    fontSize: responsiveFont(12),
+                  }}
+                />
+              </View>
             </View>
           </View>
           <View

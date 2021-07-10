@@ -159,7 +159,10 @@ const Menu = ({route}) => {
                   style={{textAlign: 'center', fontSize: responsiveFont(15)}}
                 />
                 <TouchableOpacity
-                  onPress={() => setSearchMode(null)}
+                  onPress={() => {
+                    setSearchMode(null);
+                    setSearchResult(null);
+                  }}
                   style={{
                     width: 20,
                     height: 20,
@@ -188,7 +191,10 @@ const Menu = ({route}) => {
                   />
                 </View>
                 <TouchableOpacity
-                  onPress={() => setSearchMode(null)}
+                  onPress={() => {
+                    setSearchMode(null);
+                    setSearchResult(null);
+                  }}
                   style={{
                     flex: 0.15,
                     justifyContent: 'center',

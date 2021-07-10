@@ -78,14 +78,26 @@ const OffersScreen = () => {
   }
   return (
     <View style={commonStyles.mainView}>
-      <FlatList
-        data={offersData}
-        keyExtractor={(item, index) => index}
-        contentContainerStyle={{padding: '5%'}}
-        renderItem={({item, index}) => {
-          return <OfferItem item={item} />;
-        }}
-      />
+      {offersData.length === 0 ? (
+        <MyText
+          fontType={3}
+          style={{
+            marginLeft: '5%',
+            marginTop: '5%',
+            fontSize: responsiveFont(16),
+          }}
+          text={'No available offers'}
+        />
+      ) : (
+        <FlatList
+          data={offersData}
+          keyExtractor={(item, index) => index}
+          contentContainerStyle={{padding: '5%'}}
+          renderItem={({item, index}) => {
+            return <OfferItem item={item} />;
+          }}
+        />
+      )}
     </View>
   );
 };

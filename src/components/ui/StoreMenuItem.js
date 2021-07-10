@@ -225,7 +225,8 @@ const Options = ({item, setOptions}) => {
                       style={{fontSize: responsiveFont(15)}}
                     />
                     <MyText
-                      text={`₹ ${item.price}`}
+                      cur
+                      text={`${item.price}`}
                       fontType={3}
                       style={{fontSize: responsiveFont(15)}}
                     />
@@ -288,7 +289,8 @@ const Options = ({item, setOptions}) => {
                       style={{fontSize: responsiveFont(15)}}
                     />
                     <MyText
-                      text={`₹ ${i.price}`}
+                      cur
+                      text={`${i.price}`}
                       fontType={3}
                       style={{fontSize: responsiveFont(15)}}
                     />
@@ -450,7 +452,8 @@ const StoreMenuItem = ({
             }}
           />
           <MyText
-            text={`₹ ${item.price}`}
+            cur
+            text={`${item.price}`}
             fontType={4}
             style={{
               fontSize: responsiveFont(14),
@@ -608,7 +611,7 @@ const StoreMenuItem = ({
                   style={{fontSize: responsiveFont(16)}}
                 />
                 <MyText text={'Options'} fontType={1} />
-                <MyText text={`₹ ${item.price}`} fontType={3} />
+                <MyText cur text={`${item.price}`} fontType={3} />
               </View>
             </View>
             <View style={{flex: 0.4}}>
@@ -640,7 +643,8 @@ const StoreMenuItem = ({
                   style={[{fontSize: responsiveFont(16)}]}
                 />
                 <MyText
-                  text={`₹${item.price}`}
+                  cur
+                  text={`${item.price}`}
                   fontType={3}
                   style={[{fontSize: responsiveFont(16)}]}
                 />
@@ -671,7 +675,8 @@ const StoreMenuItem = ({
                       </View>
 
                       <MyText
-                        text={`₹${i.price}`}
+                        cur
+                        text={`${i.price}`}
                         fontType={2}
                         style={{fontSize: responsiveFont(15)}}
                       />
@@ -703,7 +708,8 @@ const StoreMenuItem = ({
                             />
                           </View>
                           <MyText
-                            text={`₹${x.price}`}
+                            cur
+                            text={`${x.price}`}
                             fontType={2}
                             style={{fontSize: responsiveFont(14)}}
                           />
@@ -724,7 +730,8 @@ const StoreMenuItem = ({
                   style={{fontSize: responsiveFont(16)}}
                 />
                 <MyText
-                  text={`₹${
+                  cur
+                  text={`${
                     options.amount + options.tax + options.amountSize || 0
                   }`}
                   fontType={4}
